@@ -1,6 +1,6 @@
 //Import required libraies
 import React from "react";
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 //Import Custom Component
@@ -17,7 +17,7 @@ function LayoutTopBottom(props) {
   let { children, isAuthorized, user } = props;
   return (
     <div>
-      <Header />
+      <Header isAuthorized={isAuthorized} />
       <section className="body">
         <main className="content full">{children}</main>
       </section>
@@ -26,11 +26,8 @@ function LayoutTopBottom(props) {
   );
 }
 
-LayoutTopBottom.propTypes = {
-  children: PropTypes.node.isRequired,
-  user: PropTypes.object.isRequired,
-};
+// const mapStateToProps = (state) => ({ user: state.user });
 
-const mapStateToProps = (state) => ({ user: state.user });
+// export default connect(mapStateToProps)(LayoutTopBottom);
 
-export default connect(mapStateToProps)(LayoutTopBottom);
+export default LayoutTopBottom;

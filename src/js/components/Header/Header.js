@@ -16,7 +16,14 @@ function Header(props) {
         <nav>
           <ul className="flex">
             <li className="ml-4 font-semibold">
-              <NavLink to="/" activeClassName="text-gray-500" exact>
+              <NavLink
+                to="/"
+                activeClassName="text-gray-500"
+                className={(navData) => {
+                  return navData.isActive ? "" : "active";
+                }}
+                exact
+              >
                 Home
               </NavLink>
             </li>
@@ -66,9 +73,9 @@ function LoginUser(props) {
       <li className="ml-4 font-semibold	">
         <NavLink
           activeClassName="text-gray-500"
-          to={`/profile/${user.username}`}
+          to={`/profile/${user?.username}`}
         >
-          {user.username}
+          {user?.username}
         </NavLink>
       </li>
     </>
