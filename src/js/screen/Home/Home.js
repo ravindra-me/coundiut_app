@@ -12,12 +12,21 @@ import { updateArticles, updatePageIndex } from "../../redux/reducer/articles";
 
 function Home(props) {
   const { updateArticles, articlesInfo, updatePageIndex } = props;
+  let {
+    articles,
+    error,
+    articlesCount,
+    articlePerPage,
+    activePageIndex,
+    activeTag,
+  } = articlesInfo;
+
   const [state, setState] = useState({
-    articles: null,
-    error: null,
-    articlesCount: 0,
-    articlePerPage: 10,
-    activePageIndex: 1,
+    // articles: null,
+    // error: null,
+    // articlesCount: 0,
+    // articlePerPage: 10,
+    // activePageIndex: 1,
     activeTab: "",
     activeTag: "",
     author: "",
@@ -28,8 +37,8 @@ function Home(props) {
   }, [state.activePageIndex, state.activeTab, state.activeTag]);
 
   const fetchData = () => {
-    const limit = state.articlePerPage;
-    const offset = (state.activePageIndex - 1) * limit;
+    const limit = articlePerPage;
+    const offset = (activePageIndex - 1) * limit;
     const tag = state.activeTab;
     const author = state.author;
 
@@ -127,15 +136,6 @@ function Home(props) {
         fetchData();
       });
   };
-
-  let {
-    articles,
-    error,
-    articlesCount,
-    articlePerPage,
-    activePageIndex,
-    activeTag,
-  } = articlesInfo;
 
   const { isLogedInUser, user } = props;
 

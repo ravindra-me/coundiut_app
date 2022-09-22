@@ -10,6 +10,7 @@ function Posts(props) {
   if (articles.length < 1) {
     return <h1>No article here</h1>;
   }
+
   return articles.map((article, index) => (
     <Post
       key={index}
