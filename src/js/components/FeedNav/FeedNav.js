@@ -5,16 +5,16 @@ export default function FeedNav(props) {
     props;
   return (
     <section>
-      <div className="border-b-2  pb-2 border-solid">
-        <ul className="flex">
+      <div className="">
+        <ul className="flex feed-nav-container">
           {isLogedInUser && (
-            <li className="mr-4" onClick={() => yourFeedFn(user.username)}>
+            <li
+              className="mr-4 feed-nav-item"
+              onClick={() => yourFeedFn(user.username)}
+            >
               <NavLink
                 to="/"
-                activeClassName={`${
-                  activeTag === "your feed" &&
-                  "text-green-500 border-b-2 border-green-500 pb-3"
-                }`}
+                className={`${activeTag === "your feed" && "active-feed-nav"}`}
               >
                 Your feed
               </NavLink>
@@ -23,10 +23,10 @@ export default function FeedNav(props) {
           <li className="mr-4" onClick={() => emptyTab()}>
             <NavLink
               to="/"
-              activeClassName={`${
+              className={`${
                 activeTab === "" && activeTag === ""
-                  ? "text-green-500 border-b-2 border-green-500 pb-3"
-                  : ""
+                  ? "active-feed-nav"
+                  : "active-feed-nav-item"
               }`}
             >
               Global Feed
@@ -35,9 +35,7 @@ export default function FeedNav(props) {
           <li>
             <NavLink
               to="/"
-              activeClassName={
-                activeTab && "text-green-500 border-b-2 border-green-500 pb-3"
-              }
+              className={activeTab ? "active-feed-nav" : "active-feed-nav-item"}
             >
               {activeTab}
             </NavLink>

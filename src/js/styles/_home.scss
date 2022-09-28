@@ -1,0 +1,16 @@
+.feed-nav-container {
+  border-bottom: 1px solid rgba($secondaryColor, $alpha: 0.2);
+  .feed-nav-item {
+    border-bottom: 2px solid white;
+  }
+  .active-feed-nav {
+    color: $primaryColor;
+    border-bottom: 1.5px solid $primaryColor;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+  .active-feed-nav-item {
+    border-bottom: 1.5px solid white;
+    text-transform: capitalize;
+  }
+}

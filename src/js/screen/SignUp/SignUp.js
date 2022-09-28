@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { signupURL } from "../../config/config";
+import { updateUserInfo } from "../../redux/reducer/user";
 
 const initialState = {
   username: "",
@@ -14,12 +16,12 @@ const initialState = {
 };
 
 function SignUp(props) {
+  const { updateUserInfo } = props;
   const [state, setState] = useState(initialState);
-
+  const history = useNavigate();
   const handleChange = (event) => {
     const { value, name } = event.target;
     const errors = { ...state.errors };
-    console.log(errors);
     switch (name) {
       case "email":
         errors.email =
@@ -46,6 +48,7 @@ function SignUp(props) {
     }
 
     setState({
+      ...state,
       [name]: value,
       errors,
     });
@@ -74,10 +77,15 @@ function SignUp(props) {
           );
         throw new Error("data do not  fetch");
       }
-      let user = await response.json();
-      let { history } = props;
-      props.isLogedInUserFn(user["user"]);
-      history.push("/");
+      let { user } = await response.json();
+      updateUserInfo({
+        isLogedInUser: true,
+        user,
+        isVerifying: false,
+        profile: user,
+      });
+      localStorage.setItem("localStorageUser", user.token);
+      history("/");
     } catch (error) {
       console.log({ error });
     }
@@ -92,7 +100,9 @@ function SignUp(props) {
           className="p-8 shadow-lg border rounded-xl width-40"
           onSubmit={handleSubmit}
         >
-          <legend className="text-4xl text-center mb-4">Sign Up</legend>
+          <legend className="text-4xl text-center mb-4 primary-heading">
+            Sign Up
+          </legend>
           <Link to="/login">
             <p className="text-center text-green-500">Have a account?</p>
           </Link>
@@ -150,5 +160,11 @@ function SignUp(props) {
     </section>
   );
 }
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+const mapDispatchToProps = {
+  updateUserInfo,
+};
 
-export default SignUp;
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

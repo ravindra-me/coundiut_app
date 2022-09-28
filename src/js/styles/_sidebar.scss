@@ -1,0 +1,15 @@
+.aside {
+  background-color: rgb(243, 243, 243);
+  .tag-item {
+    background: rgba(129, 138, 144, 0.8);
+    color: whitesmoke;
+    font-weight: 500;
+  }
+  .side-nav-heading {
+    color: $footerBgColor;
+  }
+}
+.aside-tags-sections {
+  height: 800px;
+  overflow-y: auto;
+}

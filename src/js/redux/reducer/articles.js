@@ -4,7 +4,7 @@ const initialState = {
   articles: null,
   error: null,
   articlesCount: 0,
-  articlePerPage: 10,
+  articlePerPage: 5,
   activePageIndex: 1,
   activeTab: "",
   activeTag: "",
@@ -17,7 +17,7 @@ export const articlesSlice = createSlice({
   reducers: {
     updateActiveTab: (state, action) => {
       const { payload } = action;
-      return { ...state, activeTab: payload };
+      return { ...state, activeTab: payload.activeTab };
     },
     updateArticles: (state, action) => {
       const { payload } = action;
@@ -27,11 +27,24 @@ export const articlesSlice = createSlice({
       const { payload } = action;
       return { ...state, activePageIndex: payload.activePageIndex };
     },
+    updateAuthor: (state, action) => {
+      const { payload } = action;
+      return { ...state, author: payload.author };
+    },
+    updateActiveTag: (state, action) => {
+      const { payload } = action;
+      return { ...state, activeTag: payload.activeTag };
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { updateArticles, updateActiveTab, updatePageIndex } =
-  articlesSlice.actions;
+export const {
+  updateArticles,
+  updatePageIndex,
+  updateAuthor,
+  updateActiveTab,
+  updateActiveTag,
+} = articlesSlice.actions;
 
 export default articlesSlice.reducer;

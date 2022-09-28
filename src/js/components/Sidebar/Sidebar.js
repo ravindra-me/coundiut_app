@@ -35,16 +35,16 @@ export default function Sidebar(props) {
   }
 
   return (
-    <aside className="flex-30  self-start bg-gray-200 rounded p-4 ">
-      <h3 className="mb-4 ml-2 font-bold">Popular tags</h3>
-      <div className="flex flex-wrap">
+    <aside className="flex-30  self-start rounded p-4 aside">
+      <h3 className="mb-4 ml-2 font-bold side-nav-heading">Popular tags</h3>
+      <div className="flex flex-wrap aside-tags-sections">
         {state.tags.map((tag) =>
           tag === "" ? (
             ""
           ) : (
             <Link
               key={tag}
-              className="border border border-gray-400 m-2 rounded px-2 py-2 "
+              className="m-2 rounded px-2 py-2 tag-item"
               onClick={() => addTab(tag)}
               to="/"
             >

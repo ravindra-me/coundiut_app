@@ -49,7 +49,7 @@ function Pagination(props) {
             aria-label="Pagination"
           >
             <span
-              class="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20"
+              class="relative inline-flex items-center rounded-l-md border border-gray-300 border-solid bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20"
               onClick={() => {
                 changeIndex(activePageIndex - 1);
               }}
@@ -75,13 +75,15 @@ function Pagination(props) {
                 .slice(pagesArray.length - 7, pagesArray.length)
                 .map((e, i) => {
                   return (
-                    <a
-                      href="#"
+                    <span
                       aria-current="page"
-                      class="relative z-10 inline-flex items-center border border-indigo-500 bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-600 focus:z-20"
+                      class="relative z-10 inline-flex items-center border border-indigo-500 border-solid px-4 py-2 text-sm font-medium text-indigo-600 focus:z-20"
+                      onClick={() => {
+                        changeIndex(e);
+                      }}
                     >
                       {e}
-                    </a>
+                    </span>
                   );
                 })
             ) : numberOfPage - activePageIndex > 7 ? (
@@ -92,7 +94,11 @@ function Pagination(props) {
                     return (
                       <span
                         aria-current="page"
-                        class="relative z-10 inline-flex items-center border border-indigo-500 bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-600 focus:z-20"
+                        class="relative z-10 inline-flex items-center border border-zinc-300 border-solid  px-4 py-2 text-sm font-medium text-indigo-600 focus:z-20"
+                        onClick={() => {
+                          changeIndex(e);
+                        }}
+                        // bg-indigo-50
                       >
                         {e}
                       </span>
@@ -107,7 +113,10 @@ function Pagination(props) {
                     return (
                       <span
                         aria-current="page"
-                        class="relative z-10 inline-flex items-center border border-indigo-500 bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-600 focus:z-20"
+                        class="relative z-10 inline-flex items-center border border-zinc-300 border-solid  px-4 py-2 text-sm font-medium text-indigo-600 focus:z-20"
+                        onClick={() => {
+                          changeIndex(e);
+                        }}
                       >
                         {e}
                       </span>
@@ -119,7 +128,7 @@ function Pagination(props) {
             )}
             <span
               href="#"
-              class="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20"
+              class="relative inline-flex items-center rounded-r-md border border-solid border-zinc-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20"
             >
               <span class="sr-only">Next</span>
               <svg

@@ -1,17 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+
+//import custom Component
 import Hero from "../../components/Hero/Hero";
-// import FeedNav from "./FeedNav";
 import FeedNav from "../../components/FeedNav/FeedNav";
 import Posts from "../../components/Posts/Posts";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Pagination from "../../components/Pagination/Pagination";
+
+//import config and data
 import { articlesURL } from "../../config/config";
-// import Pagination from "./Pagination";
-import { updateArticles, updatePageIndex } from "../../redux/reducer/articles";
+
+// import actions
+import {
+  updateArticles,
+  updatePageIndex,
+  updateActiveTag,
+  updateAuthor,
+  updateActiveTab,
+} from "../../redux/reducer/articles";
+import Loader from "../../components/Loader/Loader";
 
 function Home(props) {
-  const { updateArticles, articlesInfo, updatePageIndex } = props;
+  const {
+    updateArticles,
+    articlesInfo,
+    updatePageIndex,
+    updateActiveTag,
+    updateAuthor,
+    updateActiveTab,
+    isAuthorized,
+    user,
+  } = props;
+
   let {
     articles,
     error,
@@ -19,29 +40,21 @@ function Home(props) {
     articlePerPage,
     activePageIndex,
     activeTag,
+    activeTab,
+    author,
   } = articlesInfo;
 
-  const [state, setState] = useState({
-    // articles: null,
-    // error: null,
-    // articlesCount: 0,
-    // articlePerPage: 10,
-    // activePageIndex: 1,
-    activeTab: "",
-    activeTag: "",
-    author: "",
-  });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchData();
-  }, [state.activePageIndex, state.activeTab, state.activeTag]);
+  }, [activePageIndex, activeTab, activeTag]);
 
   const fetchData = () => {
     const limit = articlePerPage;
     const offset = (activePageIndex - 1) * limit;
-    const tag = state.activeTab;
-    const author = state.author;
-
+    const tag = activeTag;
+    setLoading(true);
     fetch(
       articlesURL +
         `/?offset=${offset}&limit=${limit}` +
@@ -54,45 +67,52 @@ function Home(props) {
         }
         return res.json();
       })
-      .then((data) =>
+      .then((data) => {
         updateArticles({
           articles: data.articles,
           error: "",
           articlesCount: data.articlesCount,
-        })
-      )
-      .catch((error) =>
-        setState({
-          error: error,
-        })
-      );
+        });
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
   };
 
   const changeIndex = (index) => {
-    console.log("hello", index);
     updatePageIndex({
       activePageIndex: index,
     });
   };
 
   const emptyTab = () => {
-    setState({
+    updateActiveTab({
       activeTab: "",
+    });
+    updateActiveTag({
       activeTag: "",
+    });
+    updateAuthor({
       author: "",
     });
   };
 
   const addTab = (value) => {
-    setState({
+    updateActiveTab({
       activeTab: value,
+    });
+    updateActiveTag({
       activeTag: "",
     });
   };
 
   const yourFeedFn = (author) => {
-    setState({
-      author,
+    updateAuthor({
+      author: author,
+    });
+    updateActiveTag({
       activeTag: "your feed",
     });
   };
@@ -136,9 +156,6 @@ function Home(props) {
         fetchData();
       });
   };
-
-  const { isLogedInUser, user } = props;
-
   return (
     <>
       <main>
@@ -147,25 +164,31 @@ function Home(props) {
           <div className="container flex justify-between ">
             <div className="flex-60">
               <FeedNav
-                activeTab={state.activeTab}
+                activeTab={activeTab}
                 emptyTab={emptyTab}
-                isLogedInUser={isLogedInUser}
+                isLogedInUser={isAuthorized}
                 user={user}
                 yourFeedFn={yourFeedFn}
                 activeTag={activeTag}
               />
-              <Posts
-                articles={articles}
-                error={error}
-                favoriteArticle={favoriteArticle}
-                unFavoriteArticle={unFavoriteArticle}
-              />
-              <Pagination
-                articlePerPage={articlePerPage}
-                articlesCount={articlesCount}
-                activePageIndex={activePageIndex}
-                changeIndex={changeIndex}
-              />
+              {!loading ? (
+                <>
+                  <Posts
+                    articles={articles}
+                    error={error}
+                    favoriteArticle={favoriteArticle}
+                    unFavoriteArticle={unFavoriteArticle}
+                  />
+                  <Pagination
+                    articlePerPage={articlePerPage}
+                    articlesCount={articlesCount}
+                    activePageIndex={activePageIndex}
+                    changeIndex={changeIndex}
+                  />
+                </>
+              ) : (
+                <Loader />
+              )}
             </div>
             <Sidebar addTab={addTab} />
           </div>
@@ -177,10 +200,15 @@ function Home(props) {
 
 const mapStateToProps = (state) => ({
   articlesInfo: state.articles,
+  user: state.user,
 });
+
 const mapDispatchToProps = {
   updateArticles,
   updatePageIndex,
+  updateActiveTag,
+  updateAuthor,
+  updateActiveTab,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

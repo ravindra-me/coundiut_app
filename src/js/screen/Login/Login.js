@@ -1,7 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { connect } from "react-redux";
 import { loginURL } from "../../config/config";
-function Login() {
+import { updateUserInfo } from "../../redux/reducer/user";
+function Login(props) {
+  const { updateUserInfo } = props;
+  const history = useNavigate();
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -36,6 +40,7 @@ function Login() {
         break;
     }
     setData({
+      ...data,
       [name]: value,
       errors,
     });
@@ -65,10 +70,15 @@ function Login() {
         });
         throw new Error("data do not  fetch");
       }
-      let user = await response.json();
-      let { history } = this.props;
-      this.props.isLogedInUserFn(user["user"]);
-      history.push("/");
+      let { user } = await response.json();
+      updateUserInfo({
+        isLogedInUser: true,
+        user,
+        isVerifying: false,
+        profile: user,
+      });
+      localStorage.setItem("localStorageUser", user.token);
+      history("/");
     } catch (error) {
       console.log({ error });
     }
@@ -84,7 +94,9 @@ function Login() {
           className="p-8 shadow-lg border rounded-xl width-40"
           onSubmit={handleSubmit}
         >
-          <legend className="text-4xl text-center mb-4">Login</legend>
+          <legend className="text-4xl text-center mb-4 primary-heading">
+            Login
+          </legend>
           <Link to="/signup">
             <p className="text-center text-green-500">Need an account?</p>
           </Link>
@@ -128,4 +140,11 @@ function Login() {
   );
 }
 
-export default Login;
+const mapStateToProps = (state) => ({
+  user: state.user,
+});
+const mapDispatchToProps = {
+  updateUserInfo,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
