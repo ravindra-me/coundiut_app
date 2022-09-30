@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 function Header(props) {
@@ -82,4 +83,8 @@ function LoginUser(props) {
   );
 }
 
-export default Header;
+const mapStateToProps = (state) => ({
+  user: state.user.user,
+});
+
+export default connect(mapStateToProps)(Header);

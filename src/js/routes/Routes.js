@@ -12,6 +12,7 @@ export default function RoutesCom(props) {
           <>
             <Route path="/" element={<Navigate to="/home" />} />
             <Route path=":tab" element={<Authorized />} />
+            <Route path="/:tab/:username" element={<Authorized />} />
           </>
         ) : (
           <>
